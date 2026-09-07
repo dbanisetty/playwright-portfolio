@@ -1,0 +1,39 @@
+{
+  "name": "playwright-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Layered Playwright + TypeScript E2E framework with an AI-assisted test-authoring workflow.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "setup": "playwright install --with-deps chromium",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@faker-js/faker": "^9.2.0",
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^22.9.0",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.13.0",
+    "zod": "^3.23.8"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
