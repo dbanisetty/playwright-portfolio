@@ -17,12 +17,14 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@config": ["config/index"],
       "@config/*": ["config/*"],
       "@test-kit/*": ["test-kit/*"],
       "@reporting/*": ["reporting/*"],
       "@data/*": ["data/*"],
       "@ui/*": ["ui/*"],
       "@domain/*": ["domain/*"],
+      "@fixtures": ["fixtures/index"],
       "@fixtures/*": ["fixtures/*"]
     }
   },

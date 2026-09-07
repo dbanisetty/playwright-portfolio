@@ -13,7 +13,8 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/consistent-type-imports': 'warn',
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      // Playwright fixtures use `async ({}, use) => …` for no-dependency fixtures.
+      'no-empty-pattern': 'off',
     },
   },
 );

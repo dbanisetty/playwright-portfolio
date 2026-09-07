@@ -5,6 +5,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/playwright/.auth/
 
 # Env — .env.example is committed, real env files are not
 .env

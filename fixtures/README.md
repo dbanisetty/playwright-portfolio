@@ -1,8 +1,12 @@
 # `fixtures/`
 
 The extended Playwright `test` object. Every spec imports `test` and `expect`
-from here — never from `@playwright/test` directly, or the fixtures below are
-silently lost.
+from `@fixtures` — never from `@playwright/test` directly, or the fixtures below
+are silently lost.
 
-Provides (from Phase 1 on): `logger`, `pages` (PageManager), `currentUser`
-(storage-state auth), `api`, `seed` (data seeder + cleanup).
+| Fixture | Scope | Provides |
+|---------|-------|----------|
+| `logger` | test | Structured logger; its buffer is attached to the HTML report on failure |
+| `pages` | test | `PageManager` — lazy page-object registry |
+
+Planned: `currentUser` (per-role storage state), `api`, `seed` (data + cleanup).
