@@ -10,3 +10,11 @@ Test-data setup and teardown.
   `afterEach`, even when a test fails mid-way.
 
 Golden rule: never create data without registering its teardown.
+
+## Current
+
+| File | Role |
+|------|------|
+| `cleanup.ts` | `CleanupRegistry` — LIFO, guarded, drained by the `seed` fixture in `afterEach` |
+| `seed/employee.ts` | `EmployeeSeeder.create()` — seeds via `EmployeeOnboardingFlow`, registers deletion first |
+| `seed/index.ts` | `buildSeeders()` — the set exposed as the `seed` fixture |

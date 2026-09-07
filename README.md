@@ -6,10 +6,10 @@ skill, and maintained with an offline locator-repair loop.
 
 System under test: the [OrangeHRM open-source demo](https://opensource-demo.orangehrmlive.com).
 
-> **Status: Phase 2.** Architecture, `test-kit`, a login smoke suite, the
-> `orangehrm-playwright` framework skill, and the first PRD are in place.
-> PRD-driven test generation, more coverage, and CI arrive over the following
-> phases. See the delivery plan below.
+> **Status: Phase 3.** Architecture, `test-kit`, the framework skill, the
+> `prd-to-tests` / `review-tests` skills, and the first PRD-generated feature
+> suite (PIM Add Employee — 11 scenarios) are in place and green. CI, the
+> `finalize-task` skill, and the full README come next. See the delivery plan below.
 
 ---
 
@@ -47,8 +47,8 @@ Each layer owns one concern; a spec only ever touches the top layer.
 | Skill | Role |
 |-------|------|
 | `orangehrm-playwright` | Framework conventions — golden rules, file map, the test-writing workflow, and reference docs for POM / locators / fixtures / data / config |
-| _(Phase 3)_ `prd-to-tests` | Turns a PRD in `ai-docs/` into tagged specs |
-| _(Phase 3)_ `review-tests` | Audits generated specs before they land |
+| `prd-to-tests` | Turns a PRD in `ai-docs/` into tagged specs |
+| `review-tests` | Audits generated specs across five dimensions before they land |
 | _(Phase 4+)_ `finalize-task`, `locator-repair` | Ship a change; propose locator fixes on CI failure |
 
 ## Getting started
@@ -96,7 +96,7 @@ All optional — defaults target the demo, headless. Set in `.env`:
 | **0** | Repo, tooling, seven-layer skeleton, config factory *(done)* |
 | **1** | `test-kit` (logger, auth, factories), `fixtures`, first login smoke test *(done)* |
 | **2** | `orangehrm-playwright` framework skill + first PRD (PIM Add Employee) + `scenarios.csv` *(done)* |
-| **3** | `prd-to-tests` + `review-tests` skills; first feature suite generated through them |
+| **3** | `prd-to-tests` + `review-tests` skills; first feature suite generated through them *(done)* |
 | **4** | GitHub Actions CI, `finalize-task` skill, full README |
 | **5** | *(optional)* Second target via self-hosted Docker + API-driven seeding |
 | **6** | *(optional)* `locator-repair` skill wired to CI; coverage and polish |

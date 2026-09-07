@@ -2,10 +2,13 @@ import type { Page } from '@playwright/test';
 import type { Logger } from '@test-kit/logger';
 import { LoginPage } from '@ui/pages/LoginPage';
 import { DashboardPage } from '@ui/pages/DashboardPage';
+import { PimAddEmployeePage } from '@ui/pages/PimAddEmployeePage';
+import { PimPersonalDetailsPage } from '@ui/pages/PimPersonalDetailsPage';
+import { PimEmployeeListPage } from '@ui/pages/PimEmployeeListPage';
 
 /**
  * Lazy registry of page objects. A spec reaches pages through `pages.login()`,
- * `pages.dashboard()`, … — each is built on first use and cached for the test.
+ * `pages.pimAddEmployee()`, … — each is built on first use and cached for the test.
  */
 export class PageManager {
   private readonly cache = new Map<string, unknown>();
@@ -30,5 +33,26 @@ export class PageManager {
 
   dashboard(): DashboardPage {
     return this.lazy('dashboard', () => new DashboardPage(this.page, this.log.child('DashboardPage')));
+  }
+
+  pimAddEmployee(): PimAddEmployeePage {
+    return this.lazy(
+      'pimAddEmployee',
+      () => new PimAddEmployeePage(this.page, this.log.child('PimAddEmployeePage')),
+    );
+  }
+
+  pimPersonalDetails(): PimPersonalDetailsPage {
+    return this.lazy(
+      'pimPersonalDetails',
+      () => new PimPersonalDetailsPage(this.page, this.log.child('PimPersonalDetailsPage')),
+    );
+  }
+
+  pimEmployeeList(): PimEmployeeListPage {
+    return this.lazy(
+      'pimEmployeeList',
+      () => new PimEmployeeListPage(this.page, this.log.child('PimEmployeeListPage')),
+    );
   }
 }
