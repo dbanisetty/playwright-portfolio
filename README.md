@@ -1,80 +1,99 @@
 # playwright-portfolio
 
-A layered **Playwright + TypeScript** E2E framework with an **AI-assisted
-test-authoring workflow** — tests are generated from a PRD, reviewed by a second
-skill, and maintained with an offline locator-repair loop.
+[![CI](https://github.com/dbanisetty/playwright-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/dbanisetty/playwright-portfolio/actions/workflows/ci.yml)
 
-System under test: the [OrangeHRM open-source demo](https://opensource-demo.orangehrmlive.com).
+A layered **Playwright + TypeScript** end-to-end framework with an
+**AI-assisted authoring workflow**: feature tests are generated from a written
+PRD, audited by a review pass, and kept green in CI.
 
-> **Status: Phase 3.** Architecture, `test-kit`, the framework skill, the
-> `prd-to-tests` / `review-tests` skills, and the first PRD-generated feature
-> suite (PIM Add Employee — 11 scenarios) are in place and green. CI, the
-> `finalize-task` skill, and the full README come next. See the delivery plan below.
+**System under test:** the public
+[OrangeHRM open-source demo](https://opensource-demo.orangehrmlive.com) — a full
+HR admin application (authentication, role-based access, long data tables,
+multi-step forms, search).
 
 ---
 
-## Stack
+## Why it's built this way
 
-| | |
-|---|---|
-| Runner | Playwright Test |
-| Language | TypeScript (strict), ESM |
-| Node | 22 (`.nvmrc`) |
-| Config validation | zod |
-| Lint / format | ESLint (flat) + Prettier |
+| Decision | Reason |
+|----------|--------|
+| **Seven layers; a spec touches only the top** | A broken selector is a `ui/` change; a broken journey is a `domain/` change. Failures land in one place. |
+| **An owned `test-kit/`, no external test package** | Every utility is in the repo and explainable — logger, auth, factories, config. |
+| **Data setup is deterministic and self-cleaning** | Each seeder registers its teardown *before* it creates the record, so a half-created row is still removed. |
+| **Tests are generated from a PRD, then reviewed** | `prd-to-tests` turns acceptance criteria into tagged specs; `review-tests` audits them across five dimensions before they land. |
+| **Assisted locator repair, not runtime self-healing** | Self-healing masks real regressions and makes runs non-deterministic. A repair skill proposes locator fixes as a diff for a human to approve *(planned)*. |
+| **Never trust the SUT's suggested identifiers** | The shared demo hands out employee IDs that are already taken — tests pin their own. |
 
-## Architecture — seven layers
+---
 
-Each layer owns one concern; a spec only ever touches the top layer.
+## Architecture
 
-| # | Path | Responsibility |
-|---|------|----------------|
-| 1 | `config/` | Runtime config — env resolution, base URLs, defaults, Playwright projects |
-| 2 | `test-kit/` | Owned utilities — logger, auth/storage-state, factories, API wrapper |
-| 3 | `reporting/` | Log sink + artifact wiring into the HTML reporter |
-| 4 | `data/` | Test-data seeders, factories, cleanup registry |
-| 5 | `ui/` | Page Object Model — `BasePage`, components, `PageManager` |
-| 6 | `domain/` | Business flows composing `ui/`; no assertions |
-| 7 | `tests/` | Specs only — `smoke/`, `feature/`, `api/` |
+```mermaid
+flowchart TD
+  A["ai-docs/ — PRDs + scenarios.csv"] -->|prd-to-tests skill| G["tests/feature/*.spec.ts"]
+  G --> F["fixtures/ — the extended test object"]
+  F --> C1["1 · config/ — env, URLs, projects"]
+  F --> C2["2 · test-kit/ — logger, auth, factories"]
+  F --> C4["4 · data/ — seeders + cleanup registry"]
+  F --> C5["5 · ui/ — page objects + PageManager"]
+  C5 --> C6["6 · domain/ — business flows"]
+  C4 --> C6
+  G -.->|review-tests skill| R["review report"]
+```
 
-`fixtures/` holds the extended `test` object every spec imports from.
-`ai-docs/` holds the PRDs the generation workflow reads.
+| # | Layer | Owns |
+|---|-------|------|
+| 1 | `config/` | Env resolution (zod-validated), base URLs, timeouts, Playwright projects |
+| 2 | `test-kit/` | Structured logger, auth roles, faker factories |
+| 3 | `reporting/` | Log-sink / artifact wiring |
+| 4 | `data/` | UI-driven seeders, `CleanupRegistry` (drained every `afterEach`) |
+| 5 | `ui/` | `BasePage`, page objects, shared components, lazy `PageManager` |
+| 6 | `domain/` | Multi-page business flows — compose `ui/`, never assert |
+| 7 | `tests/` | Specs only — `smoke/` (PR), `feature/` (from PRDs), `api/` |
 
-## AI skills
+Specs import `test` / `expect` from `@fixtures`, never from `@playwright/test`.
 
-`.claude/skills/` holds project-local skills:
+---
 
-| Skill | Role |
+## The AI-assisted workflow
+
+`.claude/skills/` holds four project-local skills:
+
+| Skill | Does |
 |-------|------|
-| `orangehrm-playwright` | Framework conventions — golden rules, file map, the test-writing workflow, and reference docs for POM / locators / fixtures / data / config |
-| `prd-to-tests` | Turns a PRD in `ai-docs/` into tagged specs |
-| `review-tests` | Audits generated specs across five dimensions before they land |
-| _(Phase 4+)_ `finalize-task`, `locator-repair` | Ship a change; propose locator fixes on CI failure |
+| `orangehrm-playwright` | The conventions — golden rules, file map, the 6-step test-writing workflow, reference docs for POM / locators / fixtures / data / config |
+| `prd-to-tests` | A PRD in `ai-docs/` → tagged specs, plus the page objects / factories / seeders they need |
+| `review-tests` | Audits specs — coverage, tagging, naming, locators, assertion & wait discipline → one report |
+| `finalize-task` | Verify → update status → commit → push → PR |
+
+A feature goes: **write the PRD** → `prd-to-tests` → `review-tests` → fix →
+`finalize-task`. The PIM Add Employee suite (11 scenarios) was built this way.
+
+---
 
 ## Getting started
 
-Requires Node 22 and npm.
+Requires **Node 22** and npm.
 
 ```bash
-nvm use            # or install Node 22
+nvm use              # or install Node 22
 npm install
-npm run setup      # installs the Chromium browser
+npx playwright install chromium
 cp .env.example .env
 npm test
 ```
 
-### Common commands
+### Commands
 
-| Command | What it does |
-|---------|--------------|
-| `npm test` | Run the full suite |
-| `npm run test:smoke` | `@smoke` only |
-| `npm run test:regression` | `@regression` only |
-| `npm run test:headed` | Run with a visible browser |
+| Command | Runs |
+|---------|------|
+| `npm test` | The full suite |
+| `npm run test:smoke` | `@smoke` — fast, no data seeding |
+| `npm run test:regression` | `@regression` — full feature coverage |
+| `npm run test:headed` | With a visible browser |
 | `npm run test:ui` | Playwright UI mode |
 | `npm run report` | Open the last HTML report |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run lint` | ESLint |
+| `npm run typecheck` / `npm run lint` | `tsc --noEmit` / ESLint |
 
 ### Configuration
 
@@ -89,14 +108,44 @@ All optional — defaults target the demo, headless. Set in `.env`:
 
 ---
 
-## Delivery plan
+## CI
 
-| Phase | Scope |
-|-------|-------|
-| **0** | Repo, tooling, seven-layer skeleton, config factory *(done)* |
-| **1** | `test-kit` (logger, auth, factories), `fixtures`, first login smoke test *(done)* |
-| **2** | `orangehrm-playwright` framework skill + first PRD (PIM Add Employee) + `scenarios.csv` *(done)* |
-| **3** | `prd-to-tests` + `review-tests` skills; first feature suite generated through them *(done)* |
-| **4** | GitHub Actions CI, `finalize-task` skill, full README |
-| **5** | *(optional)* Second target via self-hosted Docker + API-driven seeding |
-| **6** | *(optional)* `locator-repair` skill wired to CI; coverage and polish |
+| Workflow | Trigger | Runs |
+|----------|---------|------|
+| [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every PR | typecheck, lint, `@smoke` |
+| [`nightly.yml`](.github/workflows/nightly.yml) | 03:00 UTC daily | full `@regression` |
+
+Both upload the Playwright HTML report as an artifact; failing runs also upload
+traces. The SUT is a shared public demo, so a run can occasionally go yellow on
+an environment hiccup — CI retries failed tests twice.
+
+---
+
+## Layout
+
+```
+config/          1 · runtime config factory (zod)
+test-kit/        2 · logger, auth, factories
+reporting/       3 · log sink / artifacts
+data/            4 · seeders + cleanup registry
+ui/              5 · BasePage, pages/, components/, PageManager
+domain/          6 · business flows
+fixtures/            the extended `test` object  (@fixtures)
+tests/           7 · smoke/ feature/ api/
+ai-docs/            PRDs + scenarios.csv
+.claude/skills/     orangehrm-playwright · prd-to-tests · review-tests · finalize-task
+```
+
+---
+
+## Status
+
+| Phase | Scope | |
+|-------|-------|--|
+| 0 | Scaffold, seven-layer skeleton, config factory | ✅ |
+| 1 | `test-kit`, page objects, fixtures, login smoke suite | ✅ |
+| 2 | `orangehrm-playwright` skill, first PRD | ✅ |
+| 3 | `prd-to-tests` + `review-tests` skills, Add Employee suite (11 scenarios) | ✅ |
+| 4 | GitHub Actions CI, `finalize-task` skill, this README | ✅ |
+| 5 | Second target — self-hosted app via Docker + API-driven seeding | planned |
+| 6 | `locator-repair` skill wired to the CI failure path | planned |
