@@ -6,8 +6,9 @@ skill, and maintained with an offline locator-repair loop.
 
 System under test: the [OrangeHRM open-source demo](https://opensource-demo.orangehrmlive.com).
 
-> **Status: Phase 0 — scaffold.** The architecture is in place; feature tests,
-> the `test-kit` utilities, the AI skills, and CI arrive over the following
+> **Status: Phase 2.** Architecture, `test-kit`, a login smoke suite, the
+> `orangehrm-playwright` framework skill, and the first PRD are in place.
+> PRD-driven test generation, more coverage, and CI arrive over the following
 > phases. See the delivery plan below.
 
 ---
@@ -38,6 +39,17 @@ Each layer owns one concern; a spec only ever touches the top layer.
 
 `fixtures/` holds the extended `test` object every spec imports from.
 `ai-docs/` holds the PRDs the generation workflow reads.
+
+## AI skills
+
+`.claude/skills/` holds project-local skills:
+
+| Skill | Role |
+|-------|------|
+| `orangehrm-playwright` | Framework conventions — golden rules, file map, the test-writing workflow, and reference docs for POM / locators / fixtures / data / config |
+| _(Phase 3)_ `prd-to-tests` | Turns a PRD in `ai-docs/` into tagged specs |
+| _(Phase 3)_ `review-tests` | Audits generated specs before they land |
+| _(Phase 4+)_ `finalize-task`, `locator-repair` | Ship a change; propose locator fixes on CI failure |
 
 ## Getting started
 
@@ -82,8 +94,8 @@ All optional — defaults target the demo, headless. Set in `.env`:
 | Phase | Scope |
 |-------|-------|
 | **0** | Repo, tooling, seven-layer skeleton, config factory *(done)* |
-| **1** | `test-kit` (logger, auth, factories), `fixtures`, first login smoke test |
-| **2** | Framework skill + first PRD (`ai-docs/PRDs/` — PIM Add Employee) + `scenarios.csv` |
+| **1** | `test-kit` (logger, auth, factories), `fixtures`, first login smoke test *(done)* |
+| **2** | `orangehrm-playwright` framework skill + first PRD (PIM Add Employee) + `scenarios.csv` *(done)* |
 | **3** | `prd-to-tests` + `review-tests` skills; first feature suite generated through them |
 | **4** | GitHub Actions CI, `finalize-task` skill, full README |
 | **5** | *(optional)* Second target via self-hosted Docker + API-driven seeding |

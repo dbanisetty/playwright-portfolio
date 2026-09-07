@@ -1,0 +1,12 @@
+id,feature,title,priority,tags,needs_login,needs_seed,seed_via,prd_ref,notes
+ADDEMP-01,pim-add-employee,Create employee with first and last name only,P1,@regression @critical,yes,no,,REQ-01;REQ-05;AC-1,Lands on Personal Details showing the full name
+ADDEMP-02,pim-add-employee,Create employee with a custom employee id,P2,@regression,yes,no,,REQ-02;AC-2,Override the suggested id before saving
+ADDEMP-03,pim-add-employee,Create employee with login details,P1,@regression @critical,yes,no,,REQ-04;REQ-05;AC-3,Toggle on; valid username/password; Status Enabled
+ADDEMP-04,pim-add-employee,Created user can sign in,P1,@regression @critical,yes,yes,ui,REQ-08;AC-3,Seed an employee with login details then authenticate as that user in a fresh context
+ADDEMP-05,pim-add-employee,Validation - first and last name required,P1,@regression,yes,no,,VAL-01;AC-4,Empty submit shows Required under both fields
+ADDEMP-06,pim-add-employee,Validation - duplicate employee id,P2,@regression,yes,yes,ui,VAL-04;AC-4,Seed one employee capture its id then reuse it
+ADDEMP-07,pim-add-employee,Validation - password too weak,P2,@regression,yes,no,,VAL-07;AC-4,Password lacking uppercase/number is rejected
+ADDEMP-08,pim-add-employee,Validation - passwords do not match,P2,@regression,yes,no,,VAL-08;AC-4,Confirm differs from Password
+ADDEMP-09,pim-add-employee,Validation - username too short,P3,@regression,yes,no,,VAL-06;AC-4,Username under 5 characters is rejected
+ADDEMP-10,pim-add-employee,Employee List finds the new employee by name and id,P1,@regression,yes,yes,ui,REQ-07;AC-5,Search by full name and by employee id both return the row
+ADDEMP-11,pim-add-employee,Cancel creates nothing,P3,@regression,yes,no,,REQ-06;AC-6,Fill the form then Cancel; Employee List count unchanged
