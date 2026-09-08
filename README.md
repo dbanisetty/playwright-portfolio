@@ -17,7 +17,7 @@ multi-step forms, search).
 
 | Decision | Reason |
 |----------|--------|
-| **Seven layers; a spec touches only the top** | A broken selector is a `ui/` change; a broken journey is a `domain/` change. Failures land in one place. |
+| **Seven layers, a spec touches only the top** | A broken selector is a `ui/` change; a broken journey is a `domain/` change. Failures land in one place. |
 | **An owned `test-kit/`, no external test package** | Every utility is in the repo and explainable — logger, auth, factories, config. |
 | **Data setup is deterministic and self-cleaning** | Each seeder registers its teardown *before* it creates the record, so a half-created row is still removed. |
 | **Tests are generated from a PRD, then reviewed** | `prd-to-tests` turns acceptance criteria into tagged specs; `review-tests` audits them across five dimensions before they land. |
@@ -123,7 +123,7 @@ All optional — defaults target the demo, headless. Set in `.env`:
 | [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every PR | typecheck, lint, `@smoke` |
 | [`nightly.yml`](.github/workflows/nightly.yml) | 03:00 UTC daily (+ manual) | full `@regression`, then publishes the report |
 
-CI uploads the Playwright HTML report as an artifact; failing runs also upload
+CI uploads the Playwright HTML report as an artifact, failing runs also upload
 traces. The nightly run publishes its report to **GitHub Pages** —
 **[latest regression report →](https://dbanisetty.github.io/playwright-portfolio/)**.
 
