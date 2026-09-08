@@ -9,7 +9,7 @@ export default tseslint.config(
       'playwright-report',
       'test-results',
       'blob-report',
-      '.claude/**',
+      'skills/**',
     ],
   },
   js.configs.recommended,

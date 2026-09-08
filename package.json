@@ -9,6 +9,7 @@
   },
   "scripts": {
     "setup": "playwright install --with-deps chromium",
+    "skills:link": "mkdir -p .claude && ln -sfn ../skills .claude/skills",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",

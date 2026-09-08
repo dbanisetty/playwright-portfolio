@@ -57,17 +57,25 @@ Specs import `test` / `expect` from `@fixtures`, never from `@playwright/test`.
 
 ## The AI-assisted workflow
 
-`.claude/skills/` holds four project-local skills:
+The [`skills/`](skills/) directory holds four version-controlled skills — each a
+`SKILL.md` plus reference docs and examples. They are the workflow, kept in the
+repo and reviewed like code.
 
 | Skill | Does |
 |-------|------|
-| `orangehrm-playwright` | The conventions — golden rules, file map, the 6-step test-writing workflow, reference docs for POM / locators / fixtures / data / config |
-| `prd-to-tests` | A PRD in `ai-docs/` → tagged specs, plus the page objects / factories / seeders they need |
-| `review-tests` | Audits specs — coverage, tagging, naming, locators, assertion & wait discipline → one report |
-| `finalize-task` | Verify → update status → commit → push → PR |
+| [`orangehrm-playwright`](skills/orangehrm-playwright/SKILL.md) | The conventions — golden rules, file map, the 6-step test-writing workflow, reference docs for POM / locators / fixtures / data / config |
+| [`prd-to-tests`](skills/prd-to-tests/SKILL.md) | A PRD in `ai-docs/` → tagged specs, plus the page objects / factories / seeders they need |
+| [`review-tests`](skills/review-tests/SKILL.md) | Audits specs — coverage, tagging, naming, locators, assertion & wait discipline → one report |
+| [`finalize-task`](skills/finalize-task/SKILL.md) | Verify → update status → commit → push → PR |
 
 A feature goes: **write the PRD** → `prd-to-tests` → `review-tests` → fix →
 `finalize-task`. The PIM Add Employee suite (11 scenarios) was built this way.
+
+To make the skills discoverable to Claude Code, run once after cloning:
+
+```bash
+npm run skills:link   # symlinks skills/ into .claude/skills/ (git-ignored)
+```
 
 ---
 
@@ -133,7 +141,8 @@ domain/          6 · business flows
 fixtures/            the extended `test` object  (@fixtures)
 tests/           7 · smoke/ feature/ api/
 ai-docs/            PRDs + scenarios.csv
-.claude/skills/     orangehrm-playwright · prd-to-tests · review-tests · finalize-task
+skills/             orangehrm-playwright · prd-to-tests · review-tests · finalize-task
+.github/workflows/  ci.yml · nightly.yml
 ```
 
 ---

@@ -17,3 +17,6 @@ node_modules/
 *.log
 .idea/
 .vscode/
+
+# Claude Code local dir — skills are versioned in skills/ and linked in via `npm run skills:link`
+/.claude/
