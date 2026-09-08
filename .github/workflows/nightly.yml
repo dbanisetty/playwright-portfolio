@@ -5,6 +5,16 @@ on:
     - cron: '0 3 * * *' # 03:00 UTC daily
   workflow_dispatch:
 
+# Needed to publish the report to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   regression:
     name: '@regression'
@@ -26,10 +36,20 @@ jobs:
       - name: Run @regression
         run: npx playwright test --grep @regression
 
-      - name: Upload HTML report
+      - name: Package the HTML report for Pages
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: playwright-report
           path: playwright-report/
-          retention-days: 14
+
+  publish-report:
+    name: publish report to Pages
+    needs: regression
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

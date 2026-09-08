@@ -121,11 +121,14 @@ All optional — defaults target the demo, headless. Set in `.env`:
 | Workflow | Trigger | Runs |
 |----------|---------|------|
 | [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every PR | typecheck, lint, `@smoke` |
-| [`nightly.yml`](.github/workflows/nightly.yml) | 03:00 UTC daily | full `@regression` |
+| [`nightly.yml`](.github/workflows/nightly.yml) | 03:00 UTC daily (+ manual) | full `@regression`, then publishes the report |
 
-Both upload the Playwright HTML report as an artifact; failing runs also upload
-traces. The SUT is a shared public demo, so a run can occasionally go yellow on
-an environment hiccup — CI retries failed tests twice.
+CI uploads the Playwright HTML report as an artifact; failing runs also upload
+traces. The nightly run publishes its report to **GitHub Pages** —
+**[latest regression report →](https://dbanisetty.github.io/playwright-portfolio/)**.
+
+The SUT is a shared public demo, so a run can occasionally go yellow on an
+environment hiccup — CI retries failed tests twice.
 
 ---
 
