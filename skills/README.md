@@ -23,6 +23,14 @@ npm run skills:link   # ln -sfn ../skills .claude/skills  (the link is git-ignor
 Keeping the real files in `skills/` — not `.claude/` — means they show up in the
 repo, get reviewed in PRs, and version alongside the framework they describe.
 
+### Optional: Playwright MCP
+
+`orangehrm-playwright` Step 3 (locator discovery) can use the
+[Playwright MCP server](https://github.com/microsoft/playwright-mcp) instead of
+`codegen` — it reads the live accessibility tree and hands back role-based
+locators. Copy `.mcp.json.example` → `.mcp.json` (git-ignored) to enable it.
+Authoring aid only; it plays no part in `playwright test` or CI.
+
 ## Editing a skill
 
 - `SKILL.md` frontmatter needs `name` and `description`; the description is what

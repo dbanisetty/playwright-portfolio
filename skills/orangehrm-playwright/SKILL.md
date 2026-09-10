@@ -129,7 +129,8 @@ Wire fixtures and seeders from the answers. Do not guess.
 
 ### Step 3 — Discover locators (if a page object is missing)
 
-If the page class does not exist in `ui/pages/`, capture real locators:
+If the page class does not exist in `ui/pages/`, capture real locators against
+the running app — never guess `oxd-*` selectors.
 
 ```bash
 npx playwright codegen https://opensource-demo.orangehrmlive.com/web/index.php/<path>
@@ -139,6 +140,12 @@ Keep only `getByRole` / `getByLabel` / `getByPlaceholder` / `getByText`. Discard
 CSS/XPath. Wrap them in a new `ui/pages/<Name>Page.ts` following
 [`page-object-model.md`](./references/page-object-model.md), and add a
 `PageManager` getter.
+
+> **Optional — Playwright MCP.** If the [Playwright MCP server](https://github.com/microsoft/playwright-mcp)
+> is configured for this repo (`.mcp.json`, git-ignored — copy `.mcp.json.example`),
+> use it here instead of codegen: navigate to the page, read the accessibility
+> snapshot, and take role-based locators directly. This is an authoring aid only
+> — it is never involved when `playwright test` runs.
 
 ### Step 4 — Build the spec
 

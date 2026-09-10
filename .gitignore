@@ -20,3 +20,6 @@ node_modules/
 
 # Claude Code local dir — skills are versioned in skills/ and linked in via `npm run skills:link`
 /.claude/
+
+# Local MCP config (optional Playwright MCP for locator discovery) — copy .mcp.json.example
+/.mcp.json
