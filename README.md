@@ -17,10 +17,10 @@ multi-step forms, search).
 
 | Decision | Reason |
 |----------|--------|
-| **Seven layers, a spec touches only the top** | A broken selector is a `ui/` change; a broken journey is a `domain/` change. Failures land in one place. |
+| **Seven layers, a spec touches only the top** | A broken selector is a `ui/` change, a broken journey is a `domain/` change. Failures land in one place. |
 | **An owned `test-kit/`, no external test package** | Every utility is in the repo and explainable — logger, auth, factories, config. |
 | **Data setup is deterministic and self-cleaning** | Each seeder registers its teardown *before* it creates the record, so a half-created row is still removed. |
-| **Tests are generated from a PRD, then reviewed** | `prd-to-tests` turns acceptance criteria into tagged specs; `review-tests` audits them across five dimensions before they land. |
+| **Tests are generated from a PRD, then reviewed** | `prd-to-tests` turns acceptance criteria into tagged specs `review-tests` audits them across five dimensions before they land. |
 | **Assisted locator repair, not runtime self-healing** | Self-healing masks real regressions and makes runs non-deterministic. A repair skill proposes locator fixes as a diff for a human to approve *(planned)*. |
 | **Never trust the SUT's suggested identifiers** | The shared demo hands out employee IDs that are already taken — tests pin their own. |
 
