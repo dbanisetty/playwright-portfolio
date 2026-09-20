@@ -8,5 +8,8 @@ are silently lost.
 |---------|-------|----------|
 | `logger` | test | Structured logger; its buffer is attached to the HTML report on failure |
 | `pages` | test | `PageManager` — lazy page-object registry |
+| `domain` | test | `FlowFactory` — business-flow registry (multi-page journeys) |
+| `seed` | test | Data seeders; anything they create is deleted in `afterEach` |
+| `a11y` | test | `check(pageKey)` — axe-core scan; attaches full results to the report, returns `failing`/`reportOnly` |
 
-Planned: `currentUser` (per-role storage state), `api`, `seed` (data + cleanup).
+Planned: `currentUser` (per-role storage state), `api`.
