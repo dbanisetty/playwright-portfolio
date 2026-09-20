@@ -120,7 +120,7 @@ All optional - defaults target the demo, headless. Set in `.env`:
 
 | Workflow | Trigger | Runs |
 |----------|---------|------|
-| [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every PR | typecheck, lint, `@smoke` |
+| [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every PR | typecheck, lint, `@smoke`; `@a11y` runs in parallel, non-blocking |
 | [`nightly.yml`](.github/workflows/nightly.yml) | 03:00 UTC daily (+ manual) | full `@regression`, then publishes the report |
 
 CI uploads the Playwright HTML report as an artifact, failing runs also upload
