@@ -1,0 +1,26 @@
+schema: spec-driven
+
+# Project context — constraints an agent cannot infer from the code.
+context: |
+  This repo is an E2E test framework, not an application. The system under test (SUT)
+  is the shared public OrangeHRM demo (https://opensource-demo.orangehrmlive.com).
+  Specs in openspec/specs/ describe SUT behaviour that the suite verifies, one
+  capability per OrangeHRM feature (e.g. admin-user-management, pim-add-employee).
+  Each Scenario becomes exactly one Playwright test; scenario names carry a stable id
+  prefix (e.g. "ADMUSR-01 — ...") that the test references in a trailing comment.
+  The demo has no public write API: all test data is seeded through the UI and must be
+  deleted after each test. Other people use the demo concurrently, so never rely on
+  data the test did not create, and never trust identifiers the SUT suggests.
+  Implementation follows the orangehrm-playwright skill (layers, locator order, no
+  assertions in page objects or flows); prd-to-tests and review-tests are reused.
+
+rules:
+  proposal:
+    - State what is out of scope.
+  specs:
+    - Describe observed SUT behaviour, including exact user-visible messages.
+    - Mark behaviour not yet verified on the live demo as an assumption in design.md.
+    - Every scenario names its priority tag (@critical / @regression) in its body.
+  tasks:
+    - Group tasks by framework layer (factory, page objects, seeder, spec, verify).
+    - Each task states how it is verified (typecheck, a named test, review-tests).

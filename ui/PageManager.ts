@@ -5,6 +5,8 @@ import { DashboardPage } from '@ui/pages/DashboardPage';
 import { PimAddEmployeePage } from '@ui/pages/PimAddEmployeePage';
 import { PimPersonalDetailsPage } from '@ui/pages/PimPersonalDetailsPage';
 import { PimEmployeeListPage } from '@ui/pages/PimEmployeeListPage';
+import { AdminAddUserPage } from '@ui/pages/AdminAddUserPage';
+import { AdminSystemUsersPage } from '@ui/pages/AdminSystemUsersPage';
 
 /**
  * Lazy registry of page objects. A spec reaches pages through `pages.login()`,
@@ -32,7 +34,10 @@ export class PageManager {
   }
 
   dashboard(): DashboardPage {
-    return this.lazy('dashboard', () => new DashboardPage(this.page, this.log.child('DashboardPage')));
+    return this.lazy(
+      'dashboard',
+      () => new DashboardPage(this.page, this.log.child('DashboardPage')),
+    );
   }
 
   pimAddEmployee(): PimAddEmployeePage {
@@ -53,6 +58,20 @@ export class PageManager {
     return this.lazy(
       'pimEmployeeList',
       () => new PimEmployeeListPage(this.page, this.log.child('PimEmployeeListPage')),
+    );
+  }
+
+  adminAddUser(): AdminAddUserPage {
+    return this.lazy(
+      'adminAddUser',
+      () => new AdminAddUserPage(this.page, this.log.child('AdminAddUserPage')),
+    );
+  }
+
+  adminSystemUsers(): AdminSystemUsersPage {
+    return this.lazy(
+      'adminSystemUsers',
+      () => new AdminSystemUsersPage(this.page, this.log.child('AdminSystemUsersPage')),
     );
   }
 }

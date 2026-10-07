@@ -16,3 +16,6 @@ reproducible.
 
 The `prd-to-tests` skill (Phase 3) consumes these to generate specs under
 `tests/feature/`.
+
+New features are specified with OpenSpec instead — see `openspec/specs/`
+(e.g. `admin-user-management`, scenarios `ADMUSR-01`…`ADMUSR-12`).

@@ -10,3 +10,4 @@ Business flows that compose pages from `ui/` into whole journeys —
 | Flow | Journey |
 |------|---------|
 | `EmployeeOnboardingFlow` | PIM Add Employee form → Personal Details; returns the assigned employee id |
+| `AdminUserFlow` | Admin Add User form (role, employee, status, credentials) → System Users list |

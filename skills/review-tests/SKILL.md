@@ -18,8 +18,9 @@ small one, do them inline.
 
 - Spec file paths, and/or a PRD path. If neither is given, derive specs from
   `git status --short | grep '\.spec\.ts$'`.
-- Read every spec in full, plus the PRD and the matching `scenarios.csv` rows,
-  before judging anything.
+- Read every spec in full, plus the PRD and the matching `scenarios.csv` rows
+  (or, for OpenSpec features, the `openspec/specs/<capability>/spec.md`
+  scenarios and their `Tags:` lines), before judging anything.
 
 ## The five dimensions
 

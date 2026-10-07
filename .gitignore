@@ -23,3 +23,4 @@ node_modules/
 
 # Local MCP config (optional Playwright MCP for locator discovery) — copy .mcp.json.example
 /.mcp.json
+/.playwright-mcp/
