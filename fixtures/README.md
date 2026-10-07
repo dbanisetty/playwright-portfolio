@@ -12,4 +12,7 @@ are silently lost.
 | `seed` | test | Data seeders; anything they create is deleted in `afterEach` |
 | `a11y` | test | `check(pageKey)` — axe-core scan; attaches full results to the report, returns `failing`/`reportOnly` |
 
+Helper (not a fixture): `openFreshSession(browser, logger)` from `@fixtures` opens a
+logged-out context with its own `PageManager`, for signing in as a user the test created.
+
 Planned: `currentUser` (per-role storage state), `api`.

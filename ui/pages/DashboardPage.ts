@@ -12,4 +12,11 @@ export class DashboardPage extends BasePage {
 
   /** Left navigation sidebar. */
   readonly sidebar: Locator = this.page.locator('.oxd-sidepanel');
+
+  /** A main-menu entry in the side panel, e.g. "Admin" or "PIM". */
+  menuLink(name: string): Locator {
+    return this.page
+      .getByRole('navigation', { name: 'Sidepanel' })
+      .getByRole('link', { name, exact: true });
+  }
 }

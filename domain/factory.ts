@@ -1,6 +1,7 @@
 import type { Logger } from '@test-kit/logger';
 import type { PageManager } from '@ui/PageManager';
 import { EmployeeOnboardingFlow } from '@domain/EmployeeOnboardingFlow';
+import { AdminUserFlow } from '@domain/AdminUserFlow';
 
 /** One getter per business flow. Exposed to specs as the `domain` fixture. */
 export class FlowFactory {
@@ -11,5 +12,9 @@ export class FlowFactory {
 
   employeeOnboarding(): EmployeeOnboardingFlow {
     return new EmployeeOnboardingFlow(this.pages, this.log.child('EmployeeOnboardingFlow'));
+  }
+
+  adminUsers(): AdminUserFlow {
+    return new AdminUserFlow(this.pages, this.log.child('AdminUserFlow'));
   }
 }

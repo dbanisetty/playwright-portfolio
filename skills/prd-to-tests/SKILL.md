@@ -17,7 +17,12 @@ Generates specs from a PRD. Always defers to
 
 ## Input
 
-- A PRD path under `ai-docs/PRDs/`. If none given, ask which one.
+- A PRD path under `ai-docs/PRDs/`, **or** an OpenSpec spec
+  (`openspec/specs/<capability>/spec.md`, or a delta spec inside an active
+  change). If none given, ask which one.
+- From an OpenSpec spec: each `#### Scenario:` is one test; the id prefix in its
+  name (`ADMUSR-01 — …`) is the scenario id; its `Tags:` line drives the
+  `describe` tags. Requirements play the role of `REQ-*` / `VAL-*`.
 - Optionally a list of scenario ids (`ADDEMP-01,ADDEMP-05`). Default: all rows in
   `ai-docs/scenarios.csv` for that PRD's `feature`.
 

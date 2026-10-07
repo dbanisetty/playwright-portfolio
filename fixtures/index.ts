@@ -75,3 +75,5 @@ export const test = base.extend<Fixtures>({
 });
 
 export { expect };
+
+export { openFreshSession, type FreshSession } from './session';

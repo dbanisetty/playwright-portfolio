@@ -31,6 +31,7 @@ multi-step forms, search).
 ```mermaid
 flowchart TD
   A["ai-docs/ - PRDs + scenarios.csv"] -->|prd-to-tests skill| G["tests/feature/*.spec.ts"]
+  O["openspec/ - specs + change proposals"] -->|prd-to-tests skill| G
   G --> F["fixtures/ - the extended test object"]
   F --> C1["1 · config/ - env, URLs, projects"]
   F --> C2["2 · test-kit/ - logger, auth, factories"]
@@ -70,6 +71,22 @@ repo and reviewed like code.
 
 A feature goes: **write the PRD** → `prd-to-tests` → `review-tests` → fix →
 `finalize-task`. The PIM Add Employee suite (11 scenarios) was built this way.
+
+### Spec-driven with OpenSpec
+
+New features start as an [OpenSpec](https://github.com/Fission-AI/OpenSpec) change
+instead of a PRD. `openspec/specs/` holds the living requirements; each
+`#### Scenario:` is one tagged test, and its id (e.g. `ADMUSR-01`) is in the test.
+
+| Step | Command | Produces |
+|------|---------|----------|
+| Propose | `/opsx:propose` | `openspec/changes/<change>/`: proposal, delta spec, design, tasks — reviewed **before** code |
+| Apply | `/opsx:apply` | Works through `tasks.md`, layer by layer; findings from live runs go back into `design.md` |
+| Archive | `/opsx:archive` | Merges the delta into `openspec/specs/<capability>/spec.md` |
+
+`openspec validate --all --strict` runs in CI. The Admin Add System User suite (12
+scenarios) was built this way. See
+[`openspec/changes/archive/`](openspec/changes/archive/) for the full trail.
 
 To make the skills discoverable to Claude Code, run once after cloning:
 
@@ -120,7 +137,7 @@ All optional - defaults target the demo, headless. Set in `.env`:
 
 | Workflow | Trigger | Runs |
 |----------|---------|------|
-| [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every PR | typecheck, lint, `@smoke`; `@a11y` runs in parallel, non-blocking |
+| [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every PR | typecheck, lint, `openspec validate --strict`, `@smoke`; `@a11y` runs in parallel, non-blocking |
 | [`nightly.yml`](.github/workflows/nightly.yml) | 03:00 UTC daily (+ manual) | full `@regression`, then publishes the report |
 
 CI uploads the Playwright HTML report as an artifact, failing runs also upload
@@ -144,7 +161,8 @@ domain/          6 · business flows
 fixtures/            the extended `test` object  (@fixtures)
 tests/           7 · smoke/ feature/ api/
 ai-docs/            PRDs + scenarios.csv
-skills/             orangehrm-playwright · prd-to-tests · review-tests · finalize-task
+openspec/           specs/ (living requirements) · changes/ (proposals + archive) · config.yaml
+skills/             orangehrm-playwright · prd-to-tests · review-tests · finalize-task · openspec-*
 .github/workflows/  ci.yml · nightly.yml
 ```
 
@@ -159,5 +177,6 @@ skills/             orangehrm-playwright · prd-to-tests · review-tests · fina
 | 2 | `orangehrm-playwright` skill, first PRD | ✅ |
 | 3 | `prd-to-tests` + `review-tests` skills, Add Employee suite (11 scenarios) | ✅ |
 | 4 | GitHub Actions CI, `finalize-task` skill, this README | ✅ |
+| 4b | OpenSpec spec-driven workflow, Admin Add System User suite (12 scenarios) | ✅ |
 | 5 | Second target - self-hosted app via Docker + API-driven seeding | planned |
 | 6 | `locator-repair` skill wired to the CI failure path | planned |

@@ -17,4 +17,5 @@ Golden rule: never create data without registering its teardown.
 |------|------|
 | `cleanup.ts` | `CleanupRegistry` — LIFO, guarded, drained by the `seed` fixture in `afterEach` |
 | `seed/employee.ts` | `EmployeeSeeder.create()` — seeds via `EmployeeOnboardingFlow`, registers deletion first |
+| `seed/systemUser.ts` | `SystemUserSeeder.create()` — seeds an employee, then a user via `AdminUserFlow`; `willCreate()` registers user deletion for specs that drive the form themselves |
 | `seed/index.ts` | `buildSeeders()` — the set exposed as the `seed` fixture |
